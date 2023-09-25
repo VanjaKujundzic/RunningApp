@@ -4,6 +4,8 @@ namespace RunGroupWebApp.Models
 {
     public class AppUser : IdentityUser
     {
+        
+
         public int? pace { get; set; }
         public int? Mileage { get; set; }
         public Address? Address { get; set; }
