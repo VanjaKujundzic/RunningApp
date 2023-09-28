@@ -3,18 +3,21 @@ using Microsoft.EntityFrameworkCore;
 using RunGroupWebApp.Data;
 using RunGroupWebApp.Interfaces;
 using RunGroupWebApp.Models;
+using RunGroupWebApp.ViewModels;
 
 namespace RunGroupWebApp.Controllers
 {
     public class ClubController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        
         private readonly IClubRepository _clubRepository;
+        private readonly IPhotoService _photoService;
 
-        public ClubController(ApplicationDbContext context, IClubRepository clubRepository) 
+        public ClubController(IClubRepository clubRepository, IPhotoService photoService) 
         {
             
             _clubRepository = clubRepository;
+            _photoService = photoService;
         }
         public async Task <IActionResult> Index()
         {
@@ -36,14 +39,34 @@ namespace RunGroupWebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Club club)
+        public async Task<IActionResult> Create(CreateClubViewModel clubVM)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                return View(club);
+                var result = await _photoService.AddPhotoAsync(clubVM.Image);
+                var club = new Club
+                {
+                    Title = clubVM.Title,
+                    Description = clubVM.Description,
+                    Image = result.Url.ToString(),
+                    Address = new Address
+                    {
+                        Street = clubVM.Address.Street,
+                        City = clubVM.Address.City,
+                        
+                        State = clubVM.Address.State,
+                    }
+                };
+                _clubRepository.Add(club);
+                return RedirectToAction("Index");
             }
-            _clubRepository.Add(club);
-            return RedirectToAction("Index");
+            else
+            {
+                ModelState.AddModelError("","Photo upload failed");
+            }
+            return View(clubVM);
+
+           
         }
     }
 
