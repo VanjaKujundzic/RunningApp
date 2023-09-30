@@ -12,5 +12,6 @@ namespace RunGroupWebApp.ViewModels
         public IFormFile Image { get; set; }
 
         public RacesCategory RaceCategory { get; set; }
+        public string AppUserId { get; set; }
     }
 }

@@ -20,6 +20,7 @@ namespace RunGroupWebApp
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<IClubRepository, ClubRepository>();
             builder.Services.AddScoped<IRaceRepository, RaceRepository>();
+            builder.Services.AddScoped<IDashboardRepository, DashBoardRepository>();
             builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
             builder.Services.AddScoped<IPhotoService, PhotoService>();
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -53,7 +54,7 @@ namespace RunGroupWebApp
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

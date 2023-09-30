@@ -125,19 +125,19 @@ namespace RunGroupWebApp.Data
 
                 //Users
                 var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-                string adminUserEmail = "teddysmithdeveloper@gmail.com"; //email
+                string adminUserEmail = "Admin@gmail.com"; //email
 
                 var adminUser = await userManager.FindByEmailAsync(adminUserEmail);
                 if (adminUser == null)
                 {
                     var newAdminUser = new AppUser()
                     {
-                        UserName = "teddysmithdev",
+                        UserName = "Admin",
                         Email = adminUserEmail,
                         EmailConfirmed = true,
                         Address = new Address()
                         {
-                            Street = "123 Main St",
+                            Street = "Gerbiceva 53",
                             City = "Charlotte",
                             State = "NC"
                         }
